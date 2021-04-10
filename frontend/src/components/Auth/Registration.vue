@@ -14,10 +14,10 @@
                 <v-toolbar-title> Crate a new account </v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-form v-model="options.valid" ref="form" lazy-validation>
+                <v-form v-model="valid" ref="form" lazy-validation>
                   <v-text-field
                     name="name"
-                    v-model="user.name"
+                    v-model="name"
                     light="light"
                     prepend-icon="person"
                     label="Name"
@@ -25,7 +25,7 @@
                   ></v-text-field>
                   <v-text-field
                     name="email"
-                    v-model="user.email"
+                    v-model="email"
                     light="light"
                     prepend-icon="email"
                     label="Email"
@@ -34,7 +34,7 @@
                   ></v-text-field>
                   <v-text-field
                     name="password"
-                    v-model="user.password"
+                    v-model="password"
                     light="light"
                     prepend-icon="lock"
                     label="Password"
@@ -44,7 +44,7 @@
                   ></v-text-field>
                   <v-text-field
                     name="confirmPassoword"
-                    v-model="user.confirmPassword"
+                    v-model="confirmPassword"
                     light="light"
                     prepend-icon="lock"
                     label="Confirm password"
@@ -55,9 +55,9 @@
                   <v-btn
                     block="block"
                     type="submit"
-                    @click="submit()"
-                    :disabled="!options.valid"
-                    :class="{ primary: options.valid }"
+                    @click="registration()"
+                    :disabled="!valid"
+                    :class="{ primary: valid }"
                     >Sign up</v-btn
                   >
                 </v-form>
@@ -71,19 +71,17 @@
 </template>
 
 <script>
+// import axios
+import axios from "axios";
+
 export default {
   data() {
     return {
-      options: {
-        shouldStayLoggedIn: false,
-        valid: false,
-      },
-      user: {
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      },
+      valid: false,
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
       nameRules: [
         (v) => !!v || "Name is required",
         (v) =>
@@ -97,22 +95,31 @@ export default {
       passwordRules: [
         (v) => !!v || "Password is required",
         (v) =>
-          (v && v.length >= 6) || "Password must be more or equel than 6 characters",
+          (v && v.length >= 6) ||
+          "Password must be more or equel than 6 characters",
       ],
       confirmPasswordRules: [
         (v) => !!v || "Password is required",
-        (v) => v === this.user.password || "Password should match",
+        (v) => v === this.password || "Password should match",
       ],
     };
   },
   methods: {
-    submit() {
+    async registration() {
       if (this.$refs.form.validate()) {
-        const user = {
-          email: this.user.email,
-          password: this.user.password,
-        };
-        console.log(user);
+        try {
+          await axios.post(this.serverPatch+"/registration", {
+            name: this.name,
+            email: this.email,
+            password: this.password
+          });
+          this.name = "";
+          this.email = "";
+          this.password = "";
+          this.$router.push("/");
+        } catch (err) {
+          console.log(err);
+        }
       }
     },
   },
