@@ -1,25 +1,16 @@
 // import express
 import express from "express";
-
-// import function from controller
-import { showProducts, showProductById, createProduct, updateProduct, deleteProduct } from "../controllers/product.js";
-// init express router
-const router = express.Router();
-// Get All Product
-router.get('/products', showProducts);
-// Get Single Product
-router.get('/products/:id', showProductById);
-// Create New Product
-router.post('/products', createProduct);
-// Update Product
-router.put('/products/:id', updateProduct);
-// Delete Product
-router.delete('/products/:id', deleteProduct);
-
 // myUnit
 import { createUser } from "../controllers/registration.js";
+import { showUsers } from "../administratorControllers/getTable.js";
+
+// init express router
+const router = express.Router();
+
 // create new user
 router.post('/registration', createUser);
+// administrator
+router.get('/administrator/users', showUsers);
 
 // export default router
 export default router;
