@@ -5,9 +5,9 @@ import Users from '@/components/Administrator/Users'
 // import Genre from '@/components/Administrator/Genre'
 // import Achievement from '@/components/Administrator/Achievement'
 // import Awards from '@/components/Administrator/Awards'
-// import StatusReading from '@/components/Administrator/StatusReading'
-// import StatusWriting from '@/components/Administrator/StatusWriting'
-// import SignIn from '@/components/Administrator/AdminSignIn'
+import StatusReading from '@/components/Administrator/StatusReading'
+import StatusWriting from '@/components/Administrator/StatusWriting'
+import SignIn from '@/components/Administrator/AdminSignIn'
 
 
 export default [
@@ -18,7 +18,7 @@ export default [
             {
                 path: "/administrator/users",
                 component: Users
-            }
+            },
             // {
             //     path: "/books",
             //     component: Books
@@ -39,20 +39,18 @@ export default [
             //     path: "/awards",
             //     component: Awards
             // },
-            // {
-            //     path: "/statusreading",
-            //     component: StatusReading
-            // },
-            // {
-            //     path: "/statuswriting",
-            //     component: StatusWriting
-            // },
+            {
+                path: "/administrator/statusreading",
+                component: StatusReading
+            },
+            {
+                path: "/administrator/statuswriting",
+                component: StatusWriting
+            },
         ]
     },
-    // {
-    //     path: "/",
-    //     name: "adminSignIn",
-    //     component: SighIn
-    // },
-    
+    {
+        path: "/administrator/signIn",
+        component: SignIn
+    } 
 ]

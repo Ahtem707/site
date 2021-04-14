@@ -13,13 +13,13 @@
       </tr>            
         </thead>
         <tbody>
-      <tr v-for="user in users" :key="user.username">
+      <tr v-for="user in users" :key="user.idUsers">
         <td>{{user.username}}</td>
         <td>{{user.email}}</td>
         <td>{{user.createTime}}</td>
         <td>{{user.lastEntry}}</td>
         <td>{{user.reputation}}</td>
-        <td><v-btn @click="deleteUsers"><v-icon>delete</v-icon></v-btn></td>
+        <td><v-btn @click="deleteUser(user.idUsers)"><v-icon>delete</v-icon></v-btn></td>
       </tr>
         </tbody>
     </table>
@@ -27,9 +27,7 @@
 </template>
 
 <script>
-// import axios
 import axios from "axios";
-
 export default {
   data() {
     return {
@@ -37,23 +35,33 @@ export default {
     };
   },
   created() {
-    // test
-    console.log("created")
     this.getUsers();
   },
   methods: {
     async getUsers() {
       try {
-        const response = await axios.get(this.serverPatch + "/administrator/users");
-        this.users = response.data;
-        console.log(this.users)
+        const response = await axios.post(this.serverPath+"/administrator", {
+          session: true,
+          method: 'showUsers',
+          arguments: {
+            order_by: 'username'
+          }
+        });
+        this.users = response.data
       } catch (err) {
         console.log(err);
       }
     },
-    async deleteUsers(id) {
+    async deleteUser(id) {
+      console.log(id)
       try {
-        await axios.delete(this.serverPatch + "/administrator/users"+id);
+        await axios.post(this.serverPath+"administrator", {
+          session: true,
+          method: 'deleteUser',
+          arguments: {
+            idUser: id
+          }
+        });
         this.getUsers();
       } catch (err) {
         console.log(err);

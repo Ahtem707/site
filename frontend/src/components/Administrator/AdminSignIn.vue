@@ -1,9 +1,7 @@
 <template>
-  <v-app>
-    <v-main>
       <v-container fill-height="fill-height">
         <v-layout justify-center="justify-center">
-          <v-flex class="login-form text-xs-center">
+          <v-flex class="login-form">
             <v-card light="light">
               <v-toolbar dark color="primary">
                 <v-toolbar-title>
@@ -11,41 +9,34 @@
                 </v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-form v-model="options.valid" ref="form" validation>
+                <v-form v-model="valid" ref="form" validation>
                   <v-text-field
-                    name="email"
-                    v-model="user.email"
+                    name="login"
+                    v-model="login"
                     light="light"
-                    prepend-icon="email"
-                    label="Email"
-                    type="email"
-                    :rules="emailRules"
+                    prepend-icon="login"
+                    label="Login"
+                    type="login"
                   >
                   </v-text-field>
                   <v-text-field
                     name="password"
-                    v-model="user.password"
+                    v-model="password"
                     light="light"
                     prepend-icon="lock"
                     label="Password"
                     type="password"
                     counter
-                    error-count="7"
+                    error-count="5"
                     :rules="passwordRules"
                   >
                   </v-text-field>
-                  <v-checkbox
-                    v-model="options.shouldStayLoggedIn"
-                    light="light"
-                    label="Stay logged in?"
-                    hide-details="hide-details"
-                  ></v-checkbox>
                   <br />
                   <v-btn
                     block="block"
                     @click="submit()"
-                    :disabled="!options.valid"
-                    :class="{ primary: options.valid }"
+                    :disabled="!valid"
+                    :class="{ primary: valid }"
                     >Sign in</v-btn
                   >
                 </v-form>
@@ -54,42 +45,43 @@
           </v-flex>
         </v-layout>
       </v-container>
-    </v-main>
-  </v-app>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      options: {
-        shouldStayLoggedIn: false,
-        valid: false,
-      },
-      user: {
-        email: "",
-        password: "",
-      },
-      emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-      ],
+      valid: false,
+      login: "",
+      password: "",
       passwordRules: [
         (v) => !!v || "Password is required",
         (v) =>
-          (v && v.length >= 6) ||
+          (v && v.length >= 5) ||
           "Password must be more or equel than 6 characters",
       ],
     };
   },
   methods: {
-    submit() {
-      if (this.$refs.form.validate()) {
-        const user = {
-          email: this.user.email,
-          password: this.user.password,
-        };
-        console.log(user);
+    async submit() {
+      try {
+        const response = await axios.post(this.serverPath+"administrator", {
+          session: true,
+          method: 'login',
+          arguments: {
+            login: this.login,
+            password: this.password
+          }
+        });
+        this.login = "",
+        this.password = "",
+        console.log(response)
+        localStorage.session = response.data
+        this.$session.start()
+        this.$session.set('session',response)
+      } catch (err) {
+        console.log(err);
       }
     },
   },

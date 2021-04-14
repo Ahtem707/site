@@ -6,6 +6,15 @@
 
 <script>
 export default {
-  
+  data(){
+    return{
+      aunt: false,
+    }
+  },
+  beforeCreate(){
+    if(this.aunt){
+      // this.$router.push('/administrator/signIn')
+    }
+  }
 };
 </script>

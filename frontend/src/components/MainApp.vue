@@ -47,7 +47,7 @@ export default {
         {title:'Login', icon: 'mdi-login', url: '/login'},
         {title:'Registration', icon: 'mdi-account', url: '/registration'},
         {title:'Orders', icon: 'mdi-briefcase-download-outline', url: '/orders'},
-        {title:'New ad', icon: 'mdi-plus-circle', url: '/new'},
+        {title:'New book', icon: 'mdi-plus-circle', url: '/newbook'},
         {title:'My ads', icon: 'mdi-briefcase-plus', url: '/list'},
       ]
     }

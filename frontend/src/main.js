@@ -7,9 +7,10 @@ import routerIndex from './router/index.js'
 import routerAdministrator from './router/administrator.js'
 import vuetify from './plugins/vuetify.js'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import VueSession from 'vue-session'
 
-Vue.prototype.serverPatch = "http://localhost:5000";
-
+Vue.prototype.serverPath = "http://localhost:5000/";
+Vue.use(VueSession)
 Vue.use(VueRouter)
 Vue.config.productionTip = false
 
@@ -18,13 +19,11 @@ const router = new VueRouter({
   routes: [
       {
           path: "/",
-          name: "mainApp",
           component: MainApp,
           children: routerIndex
       },
       {
           path: "/administrator",
-          name: "admin",
           component: AdminApp,
           children: routerAdministrator
       },

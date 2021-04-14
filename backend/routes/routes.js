@@ -1,16 +1,20 @@
 // import express
 import express from "express";
 // myUnit
-import { createUser } from "../controllers/registration.js";
-import { showUsers } from "../administratorControllers/getTable.js";
+import { main } from "../controllers/main.js";
+import { administrator } from "../controllers/administrator.js";
 
 // init express router
 const router = express.Router();
 
 // create new user
-router.post('/registration', createUser);
+// router.post('/registration', createUser);
+// main
+router.post('/', main);
 // administrator
-router.get('/administrator/users', showUsers);
+router.post('/administrator', administrator);
+// router.post('/administrator', showUsers);
+// router.post('/administrator', deleteUser);
 
 // export default router
 export default router;

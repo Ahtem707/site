@@ -39,7 +39,8 @@
                     prepend-icon="lock"
                     label="Password"
                     type="password"
-                    :counter="6"
+                    counter
+                    maxlength=32
                     :rules="passwordRules"
                   ></v-text-field>
                   <v-text-field
@@ -49,7 +50,8 @@
                     prepend-icon="lock"
                     label="Confirm password"
                     type="password"
-                    :counter="6"
+                    counter
+                    maxlength=32
                     :rules="confirmPasswordRules"
                   ></v-text-field>
                   <v-btn
@@ -71,9 +73,7 @@
 </template>
 
 <script>
-// import axios
 import axios from "axios";
-
 export default {
   data() {
     return {
@@ -108,7 +108,7 @@ export default {
     async registration() {
       if (this.$refs.form.validate()) {
         try {
-          await axios.post(this.serverPatch+"/registration", {
+          await axios.post(this.serverPath+"/registration", {
             name: this.name,
             email: this.email,
             password: this.password
