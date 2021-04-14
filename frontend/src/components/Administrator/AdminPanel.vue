@@ -61,8 +61,8 @@ export default {
                     url: "/administrator/achievement"
                 },
                 {
-                    title: "Awards",
-                    url: "/administrator/awards"
+                    title: "Award",
+                    url: "/administrator/award"
                 },
                 {
                     title: "Status reading",
@@ -79,11 +79,11 @@ export default {
             ]
         }
     }
-//   beforeCreate: function () {
-//     const session = true;
-//     if (session) {
-//       this.$router.push("../");
-//     }
-//   },
+  // beforeCreate: function () {
+  //   const session = true;
+  //   if (session) {
+  //     this.$router.push("../");
+  //   }
+  // },
 };
 </script>

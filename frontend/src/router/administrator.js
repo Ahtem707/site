@@ -1,10 +1,10 @@
 import AdminPanel from '@/components/Administrator/AdminPanel'
 import Users from '@/components/Administrator/Users'
-// import Books from '@/components/Administrator/Books'
-// import CycleWorks from '@/components/Administrator/CycleWorks'
-// import Genre from '@/components/Administrator/Genre'
-// import Achievement from '@/components/Administrator/Achievement'
-// import Awards from '@/components/Administrator/Awards'
+import Books from '@/components/Administrator/Books'
+import CycleWorks from '@/components/Administrator/CycleWorks'
+import Genre from '@/components/Administrator/Genre'
+import Achievement from '@/components/Administrator/Achievement'
+import Award from '@/components/Administrator/Award'
 import StatusReading from '@/components/Administrator/StatusReading'
 import StatusWriting from '@/components/Administrator/StatusWriting'
 import SignIn from '@/components/Administrator/AdminSignIn'
@@ -19,26 +19,26 @@ export default [
                 path: "/administrator/users",
                 component: Users
             },
-            // {
-            //     path: "/books",
-            //     component: Books
-            // },
-            // {
-            //     path: "/cycleworks",
-            //     component: CycleWorks
-            // },
-            // {
-            //     path: "/genre",
-            //     component: Genre
-            // },
-            // {
-            //     path: "/achievement",
-            //     component: Achievement
-            // },
-            // {
-            //     path: "/awards",
-            //     component: Awards
-            // },
+            {
+                path: "/administrator/books",
+                component: Books
+            },
+            {
+                path: "/administrator/cycleworks",
+                component: CycleWorks
+            },
+            {
+                path: "/administrator/genre",
+                component: Genre
+            },
+            {
+                path: "/administrator/achievement",
+                component: Achievement
+            },
+            {
+                path: "/administrator/award",
+                component: Award
+            },
             {
                 path: "/administrator/statusreading",
                 component: StatusReading

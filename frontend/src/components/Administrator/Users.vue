@@ -1,27 +1,29 @@
 <template>
   <v-app class="container">
-    <h1>Users</h1>
+    <h1>Пользователи</h1>
     <table>
-        <thead>
-      <tr>
-        <th>Имя пользователя</th>
-        <th>Почта</th>
-        <th>Дата создания аккаунта</th>
-        <th>Последний вход</th>
-        <th>Репутация</th>
-        <th>Команды</th>
-      </tr>            
-        </thead>
-        <tbody>
-      <tr v-for="user in users" :key="user.idUsers">
-        <td>{{user.username}}</td>
-        <td>{{user.email}}</td>
-        <td>{{user.createTime}}</td>
-        <td>{{user.lastEntry}}</td>
-        <td>{{user.reputation}}</td>
-        <td><v-btn @click="deleteUser(user.idUsers)"><v-icon>delete</v-icon></v-btn></td>
-      </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th>Имя пользователя</th>
+          <th>Почта</th>
+          <th>Дата создания аккаунта</th>
+          <th>Последний вход</th>
+          <th>Репутация</th>
+          <th>Команды</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in array" :key="item.id">
+          <td>{{ item.username }}</td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.createTime }}</td>
+          <td>{{ item.lastEntry }}</td>
+          <td>{{ item.reputation }}</td>
+          <td>
+            <v-btn @click="deleteElement(item.id)" class="red"><v-icon>delete</v-icon></v-btn>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </v-app>
 </template>
@@ -31,38 +33,35 @@ import axios from "axios";
 export default {
   data() {
     return {
-      users: [],
+      array: [],
     };
   },
   created() {
-    this.getUsers();
+    this.showUsers();
   },
   methods: {
-    async getUsers() {
+    async showUsers() {
       try {
-        const response = await axios.post(this.serverPath+"/administrator", {
+        const response = await axios.post(this.serverPath + "administrator", {
           session: true,
-          method: 'showUsers',
-          arguments: {
-            order_by: 'username'
-          }
+          method: "showUsers"
         });
-        this.users = response.data
+        this.array = response.data;
       } catch (err) {
         console.log(err);
       }
     },
     async deleteUser(id) {
-      console.log(id)
+      console.log(id);
       try {
-        await axios.post(this.serverPath+"administrator", {
+        await axios.post(this.serverPath + "administrator", {
           session: true,
-          method: 'deleteUser',
+          method: "deleteUser",
           arguments: {
-            idUser: id
-          }
+            id: id,
+          },
         });
-        this.getUsers();
+        this.showUsers();
       } catch (err) {
         console.log(err);
       }
@@ -72,16 +71,19 @@ export default {
 </script>
 
 <style>
-  .container{
-    padding: 0 10px;
-  }
-  table,th,td {
-    border: 2px solid black;
-  }
-  th,td{
-    padding: 0 5px;
-  }
-  th{
-    text-align: center;
-  }
+.container {
+  padding: 0 10px;
+}
+table,
+th,
+td {
+  border: 2px solid black;
+}
+th,
+td {
+  padding: 0 5px;
+}
+th {
+  text-align: center;
+}
 </style>

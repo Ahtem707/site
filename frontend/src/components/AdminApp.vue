@@ -8,11 +8,11 @@
 export default {
   data(){
     return{
-      aunt: false,
+
     }
   },
   beforeCreate(){
-    if(this.aunt){
+    if(this.$store.getters.isLoggedIn){
       // this.$router.push('/administrator/signIn')
     }
   }
