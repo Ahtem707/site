@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr v-for="item in array" :key="item.id">
-          <td>{{ item.award }}</td>
+          <td>{{ item.achievement }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.receipt_condition }}</td>
           <td>

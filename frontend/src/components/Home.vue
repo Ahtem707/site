@@ -1,85 +1,132 @@
 <template>
   <div>
-    <v-container>
+    <v-container grid-list-lg class="mt-5">
       <v-layout row>
-        <v-flex xs12>
-          <v-carousel>
-            <v-carousel-item
-              v-for="ad in ads"
-              :key="ad.id"
-              :src="ad.imageSrc"
-              reverse-transition="fade-transition"
-              transition="fade-transition">
-              <div class="carousel-link">
-                <v-btn class="error" :to="'/ad/'+ad.id">{{ad.title}}</v-btn>
-              </div>
-            </v-carousel-item>
-          </v-carousel>
-        </v-flex>
-      </v-layout>
-    </v-container>
-    <v-container grid-list-lg>
-      <v-layout row wrap>
         <v-flex
-          xs12
-          sm6
-          md4
-          v-for="ad of ads"
-          :key="ad.id"
+          v-for="(item,i) of array"
+          :key="i"
         >
-          <v-card class="mx-auto" max-width="500px">
-            <v-img
-              :src="ad.imageSrc"
-              height="200px"
-            ></v-img>
+          <v-card class="mx-auto" max-width="160px" height="100%">
+            <v-img :src="item.image"></v-img>
             <v-card-title primaty-title>
               <div>
-                <h3 class="headline mb-0">{{ ad.title }}</h3>
-                <div>{{ ad.description }}</div>
+                <p class="booktitle">{{ item.title }}</p>
+                <p class="bookauthor">{{ item.author }}</p>
               </div>
             </v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn flet :to="'/ad/'+ad.id">Open</v-btn>
-              <v-btn raised class="primary">Buy</v-btn>
-            </v-card-actions>
           </v-card>
         </v-flex>
       </v-layout>
     </v-container>
-    <v-container> </v-container>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      ads: [
-        {
-          title: "First ad",
-          description: "Hello, I am description",
-          promo: false,
-          imageSrc: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-          id: "1",
-        },
-        {
-          title: "Second ad",
-          description: "Hello, I am description",
-          promo: true,
-          imageSrc: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-          id: "2",
-        },
-        {
-          title: "Third ad",
-          description: "Hello, I am description",
-          promo: true,
-          imageSrc: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-          id: "3",
-        },
-      ],
+      array: []
     };
   },
+  created() {
+    // this.getBook()
+    this.getBooks()
+  },
+  methods: {
+    async getBook() {
+      try {
+          const response = await axios.post(this.serverPath, {
+            method: "getBooks",
+            arguments: {
+
+            },
+          });
+          this.array = response.data;
+        } catch (err) {
+          console.log(err);
+        }
+    },
+    getBooks(){
+      this.array.push(
+        {
+          image: 'https://author.today/content/2020/08/18/18d20644704f4d9eb0fa33463a66f417.jpg?width=265&height=400&mode=max',
+          title: 'Патол. Акт первый: Тень.',
+          annotation: 'Мой век подходил к концу. Я уходил мирно и без особых сожалений. Нет, сожалеть у меня было о чем, я ещё столько всего не сделал, но моя жизнь клонится к своему логическому концу. Да и сколько уже можно, я и так можно сказать установил рекорд долгожительства, для моей-то профессии. Так что я спокойно и даже с улыбкой встречал старую свою подругу смерть, с ней мы прошли через всю жизнь, куда уж без неё.',
+          author: 'Вадим С. Г.'
+        },
+        {
+          image: 'https://author.today/content/2020/08/27/2f0ab1f06b2844e6a6eedd0ea4874924.jpg?width=265&height=400&mode=max',
+          title: 'Патол. Акт второй: Мир теней',
+          annotation: 'Его деятельность, в новом для него мире, не осталась незамеченной. Он встал на пути у странной организации, что привыкла решать свои проблемы одним единственным способом, устранением всех им неугодных. Он проиграл свой бой, но ему удалось выжить, но какой ценой, это ещё только предстоит выяснить.',
+          author: 'Вадим С. Г.'
+        },
+        {
+          image: 'https://author.today/content/2020/09/10/ad8cb4a57748406591c61d299b5c59a1.jpg?width=265&height=400&mode=max',
+          title: 'Ниэль. Книга I: Монета Судьбы',
+          annotation: 'Потеряв всё, Михаил Орлов с облегчением погибает в тёмной клетке, сжимая в кулаке крест и провожая последним взглядом монету... В это же время, на абсолютно другой планете с невысокой скалы падает мальчик по имени Ниэль... В кармане мёртвого мальчика появляется загадочная монета, а глаза открывает уже не Ниэль, а Михаил... Что же ждёт его в новой жизни? Неизвестный мир, полный загадок и тайн, или горькая жизнь сироты в глубинах трущоб?',
+          author: 'Борис Романовский'
+        },
+        {
+          image: 'https://author.today/content/2021/01/06/5a289376c29f4025bbefd292cc717d02.jpg?width=265&height=400&mode=max',
+          title: 'Ниэль. Книга II: Белый Зал',
+          annotation: 'С момента испытаний в пирамиде прошло два года, Ниэлю исполнилось двенадцать. Куда приведёт его дальнейший путь развития? Останутся ли друзья вместе, или же каждый выберет свою дорогу? Дружба, месть, враги и соперники, битвы и чувства, верность и предательство... или нет? Следите за историей Ниэля, мальчика с фиолетовыми бровями, и узнайте сами ^_^',
+          author: 'Борис Романовский'
+        },
+        {
+          image: 'https://author.today/content/2021/01/27/c112ef11b624465985b29f020524177f.jpg?width=265&height=400&mode=max',
+          title: 'Седьмой',
+          annotation: 'Я изгой в собственном клане и один из последних живых представителей семьи.\
+Опустить руки? Забиться в угол? Смириться? Как бы не так!\
+Мне неведом страх. Я не знаю боли. Передо мной лишь цель. Разрушить препятствия. Стать сильнее. Прорваться вперёд. Сокрушить врагов.\
+Это мой путь! И я пройду его от начала и до конца.',
+          author: 'Максим Зарецкий'
+        },
+        {
+          image: 'https://author.today/content/2020/08/11/61d747ed66814a03adae719abfff5c9f.jpg?width=265&height=400&mode=max',
+          title: 'Некромант',
+          annotation: 'После аварии, он не более чем просто калека, не способный на самостоятельную жизнь, но есть Игра, в которой можно снова ощущать себя здоровым, счастливым, Здоровым.',
+          author: 'Вадим С.Г.'
+        },
+        {
+          image: 'https://s3.amazonaws.com/somewherein/pictures/fahimajerin16/fahimajerin16-1545742048-a9f147f_xlarge.jpg',
+          title: 'Испытание от очень... Очень далекой галактики',
+          annotation: 'Эта история об русском парне по имени Амос. И всё было у него нормально пока мир решил что пора бы изменить устоявшийся устои. Мир стал посылать на планеты странный вид энергии который начал наделять людей сверхъестественными способностями и как это обычно бывает правила и мораль начала решаться под давлением злодеев. Мир не обделил Амоса наградив того "СИЛОЙ", но это лишь начало неожиданных событий, к сожалению по истечению которых он покинул бренный мир... Но это лишь начало нечто большего.',
+          author: 'Серый_Путь'
+        },
+        {
+          image: 'https://cv1.litres.ru/pub/c/elektronnaya-kniga/cover_415/37663816-molli-blum-16745139-bolshaya-igra.jpg',
+          title: 'Большая игра',
+          annotation: 'Все описанные в книге события происходили в действительности. В ряде случаев я изменила имена, и некоторые характерные черты героев, чтобы сохранить неприкосновенность их частной жизни и предоставить им возможность самим решать, рассказывать или не рассказывать об этой стороне своей жизни. Все диалоги основаны на моих четких воспоминаниях, хотя они не были записаны и не являются, соответственно, последовательными стенограммами. Я просто пересказала их так, чтобы они отражали подлинное ощущение и смысл того, что происходило, и сохранили суть, настроение и дух наших разговоров.',
+          author: 'Молли Блум'
+        },
+        {
+          image: 'https://s3.amazonaws.com/somewherein/pictures/fahimajerin16/fahimajerin16-1545742048-a9f147f_xlarge.jpg',
+          title: 'Английский вояж',
+          annotation: 'Некий юноша, пребывая в печали, согласился на одно занимательное предложение. Вот и посмотрим, стоило ли этому персонажу доверять всяким подозрительным, предлагающим непонятное типам. Попаданец, вы не поверите, все в того же МКВ. В поезд везущий тушку главного, со второго курса колледжа Хогвартс, так что да, AU.',
+          author: 'Cyberdawn'
+        },
+        {
+          image: 'https://rust.litnet.com/uploads/covers/220/1564422786_71.jpg',
+          title: 'Неверный выбор',
+          annotation: 'Алекс в течение трех лет была любовницей Джейсона Коулмана, молодого миллионера. Она втайне надеясь, что когда-то он сможет разделить ее чувства. Как бы Джейсон не ранил ее чувства, Алекс всегда к нему возвращалась. Их словно связывала тайная нить...Но лишь его равнодушие, которое едва не стоило ей жизни, разорвало этот порочный круг.',
+          author: 'Ева Брук'
+        },
+        {
+          image: 'https://img3.labirint.ru/rc/6c73423281f628288a64d438d7bcadf7/220x340/books65/641311/cover.jpg?1570361159',
+          title: 'Черный кот',
+          annotation: 'В сборник вошла повесть "Повествование Артура Гордона Пима из Нантакета", рассказы "Черный кот", "Убийства на улице Морг", "Метценгерштейн", "Бес противоречия", "Ты еси муж", "Золотой жук", "Лигея", "Стук сердца", "Уильям Уилсон", "Береника" и "Сфинкс".',
+          author: 'По Эдгар Аллан'
+        },
+        {
+          image: 'https://s3.amazonaws.com/somewherein/pictures/fahimajerin16/fahimajerin16-1545742048-a9f147f_xlarge.jpg',
+          title: 'Берегись Марвел, Колобок близко!',
+          annotation: 'ГГ попаданец в Марвел в НЕ каноного персонажа с силами Геймера. Казалось бы обычный попаданец, да вот только он не хочет славы, не стремиться всех нагибать. а хочет лишь нормальной жизни, без шума и суеты и даже гарема. Он мечтает о своем деле, тихой семейной жизни с ОДНОЙ ЕДИНСТВЕННОЙ девушкой. И даже то, что тело у него довольно непрезентабельное ему не должно мешать. Но вот все равно Бог Игр сделает все, чтобы усложнить игроку жизнь. Так что покой ГГ только снится...',
+          author: 'Alex31'
+        },
+      )
+    }
+  }
 };
 </script>
 
@@ -93,5 +140,13 @@ export default {
     padding: 5px 15px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+  }
+  .booktitle, .bookauthor{
+    font-size: 12px;
+    line-height: 100%;
+    word-wrap: break-word;
+  }
+  .bookauthor{
+    color: gray;
   }
 </style>

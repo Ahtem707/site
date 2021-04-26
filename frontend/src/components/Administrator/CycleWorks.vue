@@ -6,12 +6,14 @@
       <thead>
         <tr>
           <th>Название цикла</th>
+          <th>Количество книг</th>
           <th>Команды</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in array" :key="item.id">
           <td>{{ item.title }}</td>
+          <td>{{ item.count }}</td>
           <td>
             <v-btn @click="deleteElement(item.id)" class="red"><v-icon>delete</v-icon></v-btn>
           </td>
@@ -54,6 +56,7 @@ export default {
         const response = await axios.post(this.serverPath + "administrator", {
           method: "getCycleWorks",
         });
+        console.log(response.data)
         this.array = response.data;
       } catch (err) {
         console.log(err);

@@ -16,5 +16,8 @@ router.post('/administrator', administrator);
 // router.post('/administrator', showUsers);
 // router.post('/administrator', deleteUser);
 
+//test auth
+// router.post('/administrator/login', login)
+
 // export default router
 export default router;

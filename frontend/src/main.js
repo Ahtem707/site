@@ -3,7 +3,7 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import MainApp from '@/components/MainApp'
 import AdminApp from '@/components/AdminApp'
-// import store from './store'
+import store from './store'
 import Axios from 'axios'
 import routerIndex from './router/index.js'
 import routerAdministrator from './router/administrator.js'
@@ -40,6 +40,7 @@ const router = new VueRouter({
 new Vue({
   vuetify,
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')
  

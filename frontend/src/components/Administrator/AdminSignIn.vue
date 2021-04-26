@@ -35,7 +35,8 @@
                   <v-btn
                     block="block"
                     @click="submit()"
-                    :disabled="!valid"
+                    :disabled="!valid || loading"
+                    :loading="loading"
                     :class="{ primary: valid }"
                     >Sign in</v-btn
                   >
@@ -63,35 +64,28 @@ export default {
       ],
     };
   },
+  computed: {
+    loading () {
+      return this.$store.getters.adminLoading
+    }
+  },
   methods: {
-    // login: function () {
-    //     let email = this.email
-    //     let password = this.password
-    //     this.$store.dispatch('login', { email, password })
-    //    .then(() => this.$router.push('/administrator'))
-    //    .catch(err => console.log(err))
-    // }
-    
-    // async submit() {
-    //   try {
-    //     const response = await axios.post(this.serverPath+"administrator", {
-    //       session: true,
-    //       method: 'login',
-    //       arguments: {
-    //         login: this.login,
-    //         password: this.password
-    //       }
-    //     });
-    //     this.login = "",
-    //     this.password = "",
-    //     console.log(response)
-    //     localStorage.session = response.data
-    //     this.$session.start()
-    //     this.$session.set('session',response)
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
+    submit() {
+      if (this.$refs.form.validate()) {
+        const user = {
+          login: this.login,
+          password: this.password,
+        };
+        this.$store.dispatch('adminLoginUser',user)
+        .then(() =>{
+            this.$router.push('/administrator')
+        })
+        .catch(()=>{
+          this.login = '';
+          this.password = '';
+        })
+      }
+    },
   },
 };
 </script>

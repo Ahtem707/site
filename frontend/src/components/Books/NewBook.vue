@@ -5,17 +5,20 @@
         <h1 class="text--secondary mt-10">Create new book</h1>
       </v-row>
       <v-row wrap>
-        <v-col>
-          <v-card height="400" width="240">
+        <v-col cols="4">
+          <v-card height="350" width="250">
             <v-btn
-              v-if="true"
+              v-if="!imageSrc"
               height="100%"
               width="100%"
               class="justify-center"
             >
               <v-icon @click="addImage" x-large>mdi-plus-circle</v-icon>
+              <input ref="fileInput" type="file" style="display: none"
+              accept="image/*"
+              @change="onFileImageChange">
             </v-btn>
-            <img v-else src="" height="150" />
+            <img style="height: inherit; width: inherit" v-else :src="imageSrc"/>
           </v-card>
         </v-col>
         <v-col>
@@ -41,14 +44,14 @@
                   class="mb-5"
                 ></v-textarea>
               </v-form>
+              <v-row justify="center">
+                <v-btn :disabled="!valid" class="success" @click="createBook"
+                  >Create book</v-btn
+                >
+              </v-row>
             </v-flex>
           </v-layout>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-btn :disabled="!valid" class="success" @click="createBook"
-          >Create book</v-btn
-        >
       </v-row>
     </v-container>
   </v-app>
@@ -62,28 +65,42 @@ export default {
       title: "",
       annotation: "",
       valid: false,
+      image: null,
+      imageSrc: ''
     };
   },
   methods: {
     async createBook() {
       if (this.$refs.form.validate()) {
         try {
-          await axios.post(this.serverPath+'/',{
-            method: 'createBook',
+          await axios.post(this.serverPath, {
+            method: "createBook",
             arguments: {
               title: this.title,
               annotation: this.annotation,
-            }
+              //imageUrl: this.imageSrc,
+              user: 2
+            },
           });
-        this.$router.push("/");
-        } catch(err) {
-          console.log(err)
+          this.$router.push("/");
+        } catch (err) {
+          console.log(err);
         }
       }
     },
     addImage() {
-      console.log('hi')
-    }
+      this.$refs.fileInput.click();
+    },
+    onFileImageChange(event) {
+      console.log('onFileImageChange')
+      const file = event.target.files[0]
+      const reader = new FileReader()
+      reader.onload = () => {
+        this.imageSrc = reader.result
+      }
+      reader.readAsDataURL(file)
+      this.image = file
+    },
   },
 };
 </script>

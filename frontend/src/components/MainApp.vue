@@ -17,7 +17,7 @@
       <v-app-bar-nav-icon @click="drawer=!drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <router-link v-slot="{ navigate }" custom to="/" class="pointer">
-        <span @click="navigate" role="link">Ad Apllication</span>
+          <h2 @click="navigate" role="link" class="mb-0">LiberFic</h2>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -26,6 +26,7 @@
           v-for="link of links"
           :key="link.title"
           :to="link.url"
+          style="text-decoration: none"
           text>
           <v-icon left>{{link.icon}}</v-icon>
           {{link.title}}
@@ -43,14 +44,28 @@ export default {
   data() {
     return {
       drawer: false,
-      links: [
-        {title:'Login', icon: 'mdi-login', url: '/login'},
-        {title:'Registration', icon: 'mdi-account', url: '/registration'},
-        {title:'Orders', icon: 'mdi-briefcase-download-outline', url: '/orders'},
-        {title:'New book', icon: 'mdi-plus-circle', url: '/newbook'},
-        {title:'My ads', icon: 'mdi-briefcase-plus', url: '/list'},
-      ]
+      login: true,
     }
+  },
+  computed: {
+    links: function(){
+      if(this.login){
+        return [
+          // {title:'Orders', icon: 'mdi-briefcase-download-outline', url: '/orders'},
+          {title:'Домой', icon: 'home', url: '/'},
+          {title:'Созать книгу', icon: 'mdi-plus-circle', url: '/newbook'},
+          {title:'Мои книги', icon: 'mdi-briefcase-plus', url: '/mybooks'},
+          {title:'Exit', icon: 'mdi-exit-run', url: '/exit'},
+        ]
+      }
+      else {
+        return [
+          {title:'Домой', icon: 'home', url: '/'},
+          {title:'Войти', icon: 'mdi-login', url: '/login'},
+          {title:'Зарегистрироваться', icon: 'mdi-account', url: '/registration'},
+        ]
+      }
+    },
   }
 }
 </script>

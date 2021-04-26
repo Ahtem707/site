@@ -108,16 +108,19 @@ export default {
     async registration() {
       if (this.$refs.form.validate()) {
         try {
-          await axios.post(this.serverPath+"/registration", {
-            name: this.name,
-            email: this.email,
-            password: this.password
+          await axios.post(this.serverPath, {
+            method: "createUser",
+            arguments: {
+              name: this.name,
+              email: this.email,
+              password: this.password
+            },
           });
+          this.$router.push("/");
+        } catch (err) {
           this.name = "";
           this.email = "";
           this.password = "";
-          this.$router.push("/");
-        } catch (err) {
           console.log(err);
         }
       }

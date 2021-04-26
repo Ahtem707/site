@@ -20,8 +20,8 @@
       <tbody>
         <tr v-for="item in array" :key="item.id">
           <td>{{ item.title }}</td>
-          <td>{{ item.description }}</td>
-          <td>{{ item.autor }}</td>
+          <td>{{ item.annotation }}</td>
+          <td>{{ item.author }}</td>
           <td>{{ item.cost }}</td>
           <td>{{ item.age_limit }}</td>
           <td>{{ item.first_published }}</td>

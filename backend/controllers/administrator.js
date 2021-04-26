@@ -14,26 +14,27 @@ export const administrator = (req, res) => {
             res.json(results)
         }
     }
+    function createErr(err){
+        throw new Error(err)
+    }
     switch (data.method) {
         case 'login':
             if (data.arguments.login == adminLogin && data.arguments.password == adminPassword) {
-                console.log("ok login")
-                res.json(Math.floor(Math.random() * Math.pow(10, 6)))
+                response(null,true)
             } else {
-                console.log("false login")
-                res.send('error')
+                response(createErr('Access denied'))
             }
             break;
         case 'showUsers':
             db.query(`
             SELECT
-                    idUsers,
-                    userName AS username,
-                    email,
-                    create_time AS 'createTime',
-                    last_entry AS 'lastEntry',
-                    reputation
-                FROM users`, (e, r) => response(e, r));
+                idUsers,
+                userName AS username,
+                email,
+                create_time AS 'createTime',
+                last_entry AS 'lastEntry',
+                reputation
+            FROM users`, (e, r) => response(e, r));
             break;
         case 'deleteUser':
             db.query(`
@@ -45,9 +46,15 @@ export const administrator = (req, res) => {
             db.query(`
                 SELECT
                     *,
-                    StatusWriting_idStatusWriting AS statuswriting,
-                    Users_idUsers AS author
-                FROM books`, (e, r) => response(e, r));
+                    s.status AS statuswriting,
+                    u.userName AS author
+                FROM
+                    books AS b,
+                    users AS u,
+                    StatusWriting AS s
+                WHERE
+                    u.idUsers = b.Users_idUsers AND
+                    s.idStatusWriting = b.StatusWriting_idStatusWriting`, (e, r) => response(e, r));
             break;
         case 'deleteBook':
             db.query(`
@@ -151,10 +158,27 @@ export const administrator = (req, res) => {
             break;
         case 'getCycleWorks':
             db.query(`
-            SELECT
-                idCycleWorks AS id,
-                title   
-            FROM CycleWorks`, (e, r) => response(e, r));
+            (SELECT
+                c.idCycleWorks AS id,
+                c.title,
+                count(*) AS count
+            FROM
+                CycleWorks AS c,
+                Books AS b
+            where
+                idCycleWorks = CycleWorks_idCycleWorks
+            GROUP BY c.title)
+            UNION
+            (SELECT
+                c.idCycleWorks AS id,
+                c.title,
+                '0' AS count
+            FROM
+                CycleWorks AS c,
+                Books AS b
+            where
+                idCycleWorks != CycleWorks_idCycleWorks
+                GROUP BY c.title);`, (e, r) => response(e, r));
             break;
         case 'deleteCycleWorks':
             db.query(`

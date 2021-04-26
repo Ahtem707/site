@@ -17,7 +17,10 @@ export default [
         children: [
             {
                 path: "/administrator/users",
-                component: Users
+                component: Users,
+                meta: { 
+                    requiresAuth: true
+                }
             },
             {
                 path: "/administrator/books",
